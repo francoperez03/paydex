@@ -3,19 +3,106 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-color: #3498db;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Checkout Styles */
+  .checkout-container {
+    @apply min-h-screen bg-gray-50 py-8 px-4;
+  }
+
+  .checkout-content {
+    @apply max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8;
+  }
+
+  .payment-section {
+    @apply space-y-6;
+  }
+
+  .payment-methods {
+    @apply space-y-2;
+  }
+
+
+  .payment-method.selected {
+    @apply border-2 border-[#3498db];
+  }
+
+  .payment-icon {
+    @apply text-2xl flex items-center;
+  }
+
+  .payment-name {
+    @apply text-base font-medium;
+  }
+
+  .order-summary {
+    @apply space-y-6;
+  }
+
+  .summary-items {
+    @apply space-y-4;
+  }
+
+  .summary-item {
+    @apply flex justify-between items-center text-gray-600;
+  }
+
+  .summary-item.total {
+    @apply text-lg font-bold text-gray-900 border-t pt-4;
+  }
+
+  .checkout-button {
+    @apply w-full bg-[#3498db] text-white py-3 px-6 rounded-lg font-medium 
+           hover:bg-[#2980b9] transition-colors duration-200 
+           disabled:opacity-50 disabled:cursor-not-allowed mt-6;
+  }
+
+  /* Product Detail Styles */
+  .product-detail-container {
+    @apply min-h-screen bg-gray-50 py-8 px-4;
+  }
+
+  .product-content {
+    @apply max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-12;
+  }
+
+  .product-image {
+    @apply relative aspect-square rounded-lg overflow-hidden;
+  }
+
+  .main-image {
+    @apply object-cover w-full h-full;
+  }
+
+  .product-info {
+    @apply space-y-6;
+  }
+
+  .product-title {
+    @apply text-3xl font-bold text-gray-900;
+  }
+
+  .product-price {
+    @apply text-2xl font-semibold text-[#3498db];
+  }
+
+  .product-description {
+    @apply text-gray-600 leading-relaxed;
+  }
+
+  .buy-button {
+    @apply w-full bg-[#3498db] text-white py-3 px-6 rounded-lg font-medium 
+           hover:bg-[#2980b9] transition-colors duration-200;
+  }
 }
