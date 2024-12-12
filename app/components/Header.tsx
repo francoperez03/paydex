@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './Header.module.css';
+import Image from 'next/image';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,7 +21,7 @@ const Header: React.FC = () => {
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={styles.headerContent}>
         <Link href="/" className={styles.logo}>
-          <h1>Paydex</h1>
+          <Image src="/assets/paydex-logo-black.png" alt="Paydex Logo" width={100} height={30} />
         </Link>
         <nav className={styles.navMenu}>
           <Link href="/products">Products</Link>
