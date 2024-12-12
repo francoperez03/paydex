@@ -1,81 +1,74 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // Credenciales de Binance Pay
-const BINANCE_API_KEY = process.env.BINANCE_PAY_API_KEY;
-const BINANCE_API_SECRET = process.env.BINANCE_PAY_API_SECRET;
+const BINANCE_API_KEY = process.env.BINANCE_API_KEY_PAYEX;
+const BINANCE_API_SECRET = process.env.BINANCE_API_SECRET_PAYDEX;
 const BINANCE_PAY_ENDPOINT = 'https://bpay.binanceapi.com/binancepay/openapi/v3/order';
 
-// Función para generar la firma (HMAC SHA512)
 function signRequest(payload: string, secretKey: string): string {
-  return crypto.createHmac('sha512', secretKey).update(payload).digest('hex');
+  return crypto.createHmac('sha512', secretKey).update(payload).digest('hex').toUpperCase();
 }
 
-// Manejo de solicitudes POST
 export async function POST(request: Request) {
   try {
-    const {
-      totalAmount,
-      currency,
-      merchantTradeNo,
-      productDetail,
-      productName,
-    } = await request.json();
-
-    // Construir el payload para Binance Pay
+    const body = await request.json();
+    const { totalAmount, currency, productDetail, productName } = body;
+    console.log('Request body:', body);
     const payload = {
-      env: { terminalType: 'WEB' },
-      merchantTradeNo,
-      orderAmount: totalAmount.toString(),
-      currency,
-      goods: {
-        goodsType: '02',
-        goodsCategory: '0000',
-        referenceGoodsId: 'product-id',
-        goodsName: productName,
-        goodsDetail: productDetail,
+      env: {
+        terminalType: 'WEB' 
       },
-    };
-
+      merchantTradeNo: `${Date.now()}`,
+      orderAmount: totalAmount,
+      currency,
+      description: productDetail,
+      goodsDetails: [
+        {
+          goodsType: "01",
+          goodsCategory: "D000",
+          referenceGoodsId: "7876763A3B",
+          goodsName:productName,
+          goodsDetail: productDetail
+        }
+      ]
+    }
+    const timestamp = Date.now();
+    
     const payloadString = JSON.stringify(payload);
-    const nonceStr = crypto.randomBytes(16).toString('hex');
-    const timestamp = Date.now().toString();
-
-    // Crear la cadena a firmar
-    const message = `${timestamp}\n${nonceStr}\n${payloadString}\n`;
+    const nonce = generateNonce();
+    const message = `${timestamp}\n${nonce}\n${payloadString}\n`;
     const signature = signRequest(message, BINANCE_API_SECRET!);
 
-    // Enviar solicitud a Binance Pay
-    const response = await axios.post(BINANCE_PAY_ENDPOINT, payload, {
+    const { data } = await axios.post(BINANCE_PAY_ENDPOINT, payload, {
       headers: {
         'Content-Type': 'application/json',
         'BinancePay-Timestamp': timestamp,
-        'BinancePay-Nonce': nonceStr,
-        'BinancePay-Certificate-SN': BINANCE_API_KEY!,
-        'BinancePay-Signature': signature,
-      },
+        'BinancePay-Nonce': nonce,
+        'BinancePay-Certificate-SN': BINANCE_API_KEY,
+        'BinancePay-Signature': signature
+      }
     });
-
-    const data = response.data;
-
-    // Manejar la respuesta de Binance
-    if (data.returnCode === 'SUCCESS') {
-      return NextResponse.json({
-        success: true,
-        checkoutUrl: data.data.checkoutUrl,
-      });
-    } else {
-      return NextResponse.json(
-        { success: false, message: data.returnMessage },
-        { status: 400 }
-      );
+    const checkoutUrl = data?.data?.universalUrl;
+    if (!checkoutUrl) {
+      throw new Error('checkoutUrl no encontrado en la respuesta de Binance');
     }
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { success: false, message: 'Error procesando la orden en Binance Pay' },
-      { status: 500 }
-    );
+
+    return NextResponse.json({
+      success: true,
+      checkoutUrl,
+    });
+  } catch (err) {
+    const error: AxiosError = err as AxiosError;
+    console.error('Error creating Binance order:', error.response?.data || error.message);
+    return NextResponse.json({
+      success: false,
+      error: error.response?.data || error.message
+    }, { status: 500 });
   }
 }
+const generateNonce = () => {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  return Array.from({length: 32}, () => chars.charAt(Math.floor(Math.random() * chars.length))).join('');
+};

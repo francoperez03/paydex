@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import styles from './Checkout.module.css';
-import { getOAuthToken, createCollection, queryCollection } from '../services/binance-service';
+import { createBinanceOrder } from '../services/binance-service';
 
 interface PaymentMethod {
   id: string;
@@ -14,8 +14,7 @@ interface PaymentMethod {
 
 export default function Checkout() {
   const [selectedPayment, setSelectedPayment] = useState<string>('');
-  const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
-  const [merchantTradeNo, setMerchantTradeNo] = useState<string | null>(null);
+  // const [paymentStatus, setPaymentStatus  ] = useState<string | null>(null);
   const [cardDetails, setCardDetails] = useState({
     cardNumber: '',
     cardHolder: '',
@@ -42,43 +41,13 @@ export default function Checkout() {
 
   const handleCreateCollection = async () => {
     try {
-      const accessToken = await getOAuthToken();
-      const response = await createCollection(accessToken, {
-        amount: orderSummary.total,
-        currency: 'USDT',
-        description: 'Pago por productos',
-      });
+ 
+      const response = await createBinanceOrder()
 
-      if (response.success && response.merchantTradeNo) {
-        setMerchantTradeNo(response.merchantTradeNo);
-        window.open(response.qrcodeLink, '_blank');
-      } else {
-        alert('Error al crear la colección: ' + (response.message || 'Desconocido'));
-      }
+      return response;
     } catch (error) {
       console.error('Error creando la colección:', error);
       alert('Hubo un problema al procesar el pago.');
-    }
-  };
-
-  const handleQueryCollection = async () => {
-    if (!merchantTradeNo) {
-      alert('No hay una orden activa para verificar.');
-      return;
-    }
-
-    try {
-      const accessToken = await getOAuthToken();
-      const statusResponse = await queryCollection(accessToken, { collectionId: merchantTradeNo });
-
-      if (statusResponse.success) {
-        setPaymentStatus(statusResponse.data.status);
-      } else {
-        alert('Error al consultar el estado del pago: ' + statusResponse.message);
-      }
-    } catch (error) {
-      console.error('Error consultando el estado del pago:', error);
-      alert('Hubo un problema al consultar el estado del pago.');
     }
   };
 
@@ -100,13 +69,13 @@ export default function Checkout() {
     });
   };
 
-  useEffect(() => {
-    if (paymentStatus === 'SUCCESS') {
-      alert('El pago fue exitoso. Gracias por tu compra.');
-    } else if (paymentStatus === 'FAILED') {
-      alert('El pago no se completó.');
-    }
-  }, [paymentStatus]);
+  // useEffect(() => {
+  //   if (paymentStatus === 'SUCCESS') {
+  //     alert('El pago fue exitoso. Gracias por tu compra.');
+  //   } else if (paymentStatus === 'FAILED') {
+  //     alert('El pago no se completó.');
+  //   }
+  // }, [paymentStatus]);
 
   return (
     <div className={`checkout-container ${styles['checkout-container']}`}>
@@ -203,14 +172,14 @@ export default function Checkout() {
               <span>${orderSummary.total.toFixed(2)}</span>
             </div>
           </div>
-          {merchantTradeNo && (
+          {/* {merchantTradeNo && (
             <button 
               className={`status-button ${styles['status-button']}`}
               onClick={handleQueryCollection}
             >
               Verificar estado del pago
             </button>
-          )}
+          )} */}
         </div>
       </div>
     </div>

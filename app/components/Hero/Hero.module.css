@@ -1,0 +1,87 @@
+.heroContainer {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .heroContent {
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .textSection {
+    flex: 1;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .highlight {
+    color: #3498db;
+  }
+  
+  .slogan {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  .bullets {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+  
+  .bullets li {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  
+  .buttons {
+    margin-top: 1rem;
+    display: flex;
+  }
+  
+  .secondaryButton {
+    background-color: #3498db;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .secondaryButton:hover {
+    background-color: #2980b9;
+  }
+  
+  .imageSection {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .appImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+  }
+  
+  .productDetailContainer {
+    padding: 4rem 2rem;
+  }
+  
