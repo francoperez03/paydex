@@ -5,13 +5,12 @@ import { useRef } from 'react';
 import styles from './Hero.module.css';
 
 interface HeroProps {
-    title: string;
-    slogan: string;
-    bullets: string[];
+  title: string;
+  slogan: string;
+  bullets: string[];
 }
 
-const Hero = ({title, slogan, bullets}: HeroProps) => {
-  // Referencia para la sección de detalles del producto
+const Hero = ({ title, slogan, bullets }: HeroProps) => {
   const productDetailRef = useRef<HTMLDivElement>(null);
 
   const handleScrollToDetails = () => {
@@ -32,8 +31,9 @@ const Hero = ({title, slogan, bullets}: HeroProps) => {
               {slogan}
             </p>
             <ul className={styles.bullets}>
-              <li>{bullets[0]}</li>
-              <li>{bullets[1]}</li>
+              {bullets.map((bullet, index) => (
+                <li key={index}>{bullet}</li>
+              ))}
             </ul>
             <div className={styles.buttons}>
               <button className={styles.secondaryButton} onClick={handleScrollToDetails}>
@@ -43,7 +43,7 @@ const Hero = ({title, slogan, bullets}: HeroProps) => {
           </div>
           <div className={styles.imageSection}>
             <Image
-              src="/assets/binance-pay.png" // Cambia esta URL por tu imagen real
+              src="/assets/binance-pay.png"
               alt="Crypto App"
               width={300}
               height={300}
@@ -53,9 +53,8 @@ const Hero = ({title, slogan, bullets}: HeroProps) => {
         </div>
       </section>
 
-      {/* Sección de detalles del producto */}
       <div ref={productDetailRef} className={styles.productDetailContainer}>
-        {/* Aquí iría el contenido de los detalles del producto */}
+        {/* Contenido adicional */}
       </div>
     </>
   );
