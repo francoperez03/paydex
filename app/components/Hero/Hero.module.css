@@ -88,3 +88,8 @@
 .productDetailContainer {
   padding: 4rem 2rem;
 }
+
+.highlight {
+  font-weight: bold;
+  color: #3498db;
+}

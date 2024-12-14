@@ -10,12 +10,12 @@ const ProductDetail = () => {
   const router = useRouter();
 
   const product = {
-    name: 'Premium Headphones',
+    name: 'Growing Content Course',
     description:
-      'High-quality wireless headphones with noise cancellation and premium sound quality. Perfect for music lovers and professionals.',
-    price: 299.99,
+      'How to become a Content Specialist. Earn $5000 per month and scale your personal brand.',
+    price: 1499.99,
     imageUrl:
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop',
+      '/assets/product-mini.png',
   };
 
   const handleBuyClick = () => {
@@ -23,15 +23,14 @@ const ProductDetail = () => {
   };
 
   const heroBullets = [
-    'Activa pagos Buy Now, Pay Later (BNPL) con USDT y tarjetas.',
-    'Recibe los pagos con tarjeta directamente en tu wallet o exchange cripto.',
+    'Accept payments in installments using Stablecoins and credit cards.',
+    'Receive payments instantly to your wallet or crypto exchange, directly from card transactions.',
   ];
 
   return (
     <div>
       <Hero 
-        title="Todos los pagos en una sola solución" 
-        slogan="Más seguro, más rápido, más simple" 
+        title="Integrate all your payment methods into a single gateway" 
         bullets={heroBullets} 
       />
       <div className={styles.productDetailContainer}>
@@ -51,7 +50,7 @@ const ProductDetail = () => {
             <p className={styles.productPrice}>${product.price}</p>
             <p className={styles.productDescription}>{product.description}</p>
             <button className={styles.buyButton} onClick={handleBuyClick}>
-              Comprar
+              Purchase
             </button>
           </div>
         </div>

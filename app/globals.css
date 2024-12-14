@@ -18,7 +18,7 @@
 @layer components {
   /* Checkout Styles */
   .checkout-container {
-    @apply min-h-screen bg-gray-50 py-8 px-4;
+    @apply min-h-screen py-8 px-4;
   }
 
   .checkout-content {

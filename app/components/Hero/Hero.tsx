@@ -1,17 +1,46 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Hero.module.css';
 
 interface HeroProps {
   title: string;
-  slogan: string;
   bullets: string[];
 }
 
-const Hero = ({ title, slogan, bullets }: HeroProps) => {
+const Hero = ({ title, bullets }: HeroProps) => {
+  const [slogan, setSlogan] = useState('by');
   const productDetailRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sloganCycle = [
+      { text: 'by', delay: 100 },
+      { text: 'b', delay: 100 },
+      { text: '|', delay: 100 },
+      { text: 'f', delay: 100 },
+      { text: 'fo', delay: 100 },
+      { text: 'for', delay: 1500 },
+      { text: 'fo', delay: 100 },
+      { text: 'f', delay: 100 },
+      { text: '|', delay: 100 },
+      { text: 'b', delay: 100 },
+      { text: 'by', delay: 1500 }
+    ];
+    let currentIndex = 0;
+    let timeoutId: NodeJS.Timeout;
+
+    const updateSlogan = () => {
+      const { text, delay } = sloganCycle[currentIndex];
+      setSlogan(text);
+      currentIndex = (currentIndex + 1) % sloganCycle.length;
+      timeoutId = setTimeout(updateSlogan, delay);
+    };
+
+    timeoutId = setTimeout(updateSlogan, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   const handleScrollToDetails = () => {
     if (productDetailRef.current) {
@@ -24,11 +53,9 @@ const Hero = ({ title, slogan, bullets }: HeroProps) => {
       <section className={styles.heroContainer}>
         <div className={styles.heroContent}>
           <div className={styles.textSection}>
-            <h1 className={styles.title}>
-              {title}
-            </h1>
+            <h1 className={styles.title}>{title}</h1>
             <p className={styles.slogan}>
-              {slogan}
+              Made <span className={styles.highlight}>{slogan}</span> digital creators.
             </p>
             <ul className={styles.bullets}>
               {bullets.map((bullet, index) => (

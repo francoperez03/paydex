@@ -23,6 +23,7 @@ export default function Checkout() {
   });
 
   const paymentMethods: PaymentMethod[] = [
+    { id: 'bnpl', name: '', icon: '/assets/paydex-logo-black.png' },
     { id: 'paypal', name: '', icon: '/assets/paypal-logo.png' },
     { id: 'binance', name: '', icon: '/assets/binancepay-logo.svg' },
     { id: 'credit', name: '', icon: '/assets/credit-card-logo.jpeg' },
@@ -81,7 +82,7 @@ export default function Checkout() {
     <div className={`checkout-container ${styles['checkout-container']}`}>
       <div className={`checkout-content ${styles['checkout-content']}`}>
         <div className={`payment-section ${styles['payment-section']}`}>
-          <h2>Seleccionar medio de pago</h2>
+          <h2>Select a payment method</h2>
           <div className={`payment-methods ${styles['payment-methods']}`}>
             {paymentMethods.map((method) => (
               <div
@@ -89,11 +90,17 @@ export default function Checkout() {
                 className={`payment-method ${selectedPayment === method.id ? 'selected' : ''} ${styles['payment-method']}`}
                 onClick={() => handlePaymentSelect(method.id)}
               >
+                {method.id === 'bnpl' && (
+                  <div className={`bnpl-logo ${styles['bnpl-logo']}`} style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                    Installments by&nbsp;
+                  </div>
+                )}
+
                 <Image 
                   src={method.icon} 
                   alt={method.name || 'Payment method'} 
                   className={`payment-icon ${styles['payment-icon']}`}
-                  width={200}
+                  width={method.id === 'bnpl' ? 110 : 200}
                   height={50}
                   priority
                 />
@@ -148,23 +155,23 @@ export default function Checkout() {
                 (!cardDetails.cardNumber || !cardDetails.cardHolder || !cardDetails.expiryDate || !cardDetails.cvv))
             }
           >
-            Completar compra
+            Complete purchase
           </button>
         </div>
 
         <div className={`order-summary ${styles['order-summary']}`}>
-          <h2>Resumen de la Orden</h2>
+          <h2>Order Summary</h2>
           <div className={`summary-items ${styles['summary-items']}`}>
             <div className={`summary-item ${styles['summary-item']}`}>
               <span>Subtotal</span>
               <span>${orderSummary.subtotal.toFixed(2)}</span>
             </div>
             <div className={`summary-item ${styles['summary-item']}`}>
-              <span>Envío</span>
+              <span>Shipping</span>
               <span>${orderSummary.shipping.toFixed(2)}</span>
             </div>
             <div className={`summary-item ${styles['summary-item']}`}>
-              <span>Impuestos</span>
+              <span>Taxes</span>
               <span>${orderSummary.tax.toFixed(2)}</span>
             </div>
             <div className={`summary-item total ${styles['summary-item']} ${styles.total}`}>

@@ -1,13 +1,11 @@
 .checkoutContainer {
     min-height: 100vh;
-    background-color: #f9f9f9;
     padding: 2rem;
   }
   
   .checkoutContent {
     max-width: 800px;
     margin: 0 auto;
-    background: #fff;
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -71,7 +69,6 @@
   
   .payment-method.selected {
     border-color: #3498db;
-    background-color: #f8fafc;
   }
   
   .paymentIcon {
@@ -121,7 +118,6 @@
     padding: 1.5rem;
     border: 1px solid #e2e8f0;
     border-radius: 0.5rem;
-    background-color: #f8fafc;
   }
   
   .credit-card-form input {
