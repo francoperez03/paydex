@@ -64,7 +64,7 @@ const Hero = ({ title, bullets }: HeroProps) => {
             </ul>
             <div className={styles.buttons}>
               <button className={styles.secondaryButton} onClick={handleScrollToDetails}>
-                Prueba aquí
+                Try it!
               </button>
             </div>
           </div>

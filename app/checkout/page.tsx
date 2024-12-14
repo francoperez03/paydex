@@ -30,10 +30,10 @@ export default function Checkout() {
   ];
 
   const orderSummary = {
-    subtotal: 299.99,
-    shipping: 9.99,
-    tax: 29.99,
-    total: 339.97,
+    subtotal: 1499.99,
+    shipping: 0.00,
+    tax: 0.00,
+    total: 1499.99,
   };
 
   const handlePaymentSelect = (id: string) => {
