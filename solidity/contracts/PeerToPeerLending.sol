@@ -33,8 +33,8 @@ contract PeerToPeerLending is IPeerToPeerLending {
     constructor(address _token, uint256 _depositInterestRate) {
         token = IERC20(_token);
         depositInterestRate = _depositInterestRate;
-        Sfs sfsContract = Sfs(0xBBd707815a7F7eb6897C7686274AFabd7B579Ff6);
-        sfsContract.register(msg.sender);
+        // Sfs sfsContract = Sfs(0xBBd707815a7F7eb6897C7686274AFabd7B579Ff6);
+        // sfsContract.register(msg.sender);
     }
 
 

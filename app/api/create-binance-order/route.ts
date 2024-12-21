@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         terminalType: 'WEB' 
       },
       merchantTradeNo: `${Date.now()}`,
-      orderAmount: totalAmount,
+      orderAmount: totalAmount.toFixed(2),
       currency,
       description: productDetail,
       goodsDetails: [
@@ -50,6 +50,8 @@ export async function POST(request: Request) {
         'BinancePay-Signature': signature
       }
     });
+
+    console.log(data)
     const checkoutUrl = data?.data?.universalUrl;
     if (!checkoutUrl) {
       throw new Error('checkoutUrl no encontrado en la respuesta de Binance');

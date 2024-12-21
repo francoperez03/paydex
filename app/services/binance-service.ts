@@ -29,27 +29,28 @@ export async function queryCollection(
       throw new Error(`Error querying collection: ${response.statusText}`);
     }
 
-    return await response.json(); // Devuelve los datos del estado de la colección
+    return await response.json();
   } catch (error) {
     console.error('Failed to query collection:', error);
     throw error;
   }
 }
 
-export const createBinanceOrder = async () => {
+export const createBinanceOrder = async ({ detail, amount }: { detail: string, amount: number}) => {
     try {
       const response = await fetch('/api/create-binance-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          totalAmount: 339.97,
+          totalAmount: amount,
           currency: "USDT",
-          productDetail: "Detalles del producto",
-          productName: "Nombre del producto"
+          productDetail: detail,
+          productName: detail
         })
       });
   
       const result = await response.json();
+      console.log(result);
       if (result.success) {
         window.location.href = result.checkoutUrl;
       } else {

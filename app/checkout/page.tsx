@@ -14,6 +14,7 @@ interface PaymentMethod {
 
 export default function Checkout() {
   const [selectedPayment, setSelectedPayment] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
   // const [paymentStatus, setPaymentStatus  ] = useState<string | null>(null);
   const [cardDetails, setCardDetails] = useState({
     cardNumber: '',
@@ -43,7 +44,7 @@ export default function Checkout() {
   const handleCreateCollection = async () => {
     try {
  
-      const response = await createBinanceOrder()
+      const response = await createBinanceOrder({detail: 'Growing Content Course', amount: orderSummary.total});
 
       return response;
     } catch (error) {
@@ -53,8 +54,10 @@ export default function Checkout() {
   };
 
   const handleCheckout = () => {
+    setIsLoading(true);
     if (!selectedPayment) {
       alert('Por favor selecciona un método de pago');
+      setIsLoading(false);
       return;
     }
 
@@ -69,14 +72,6 @@ export default function Checkout() {
       [e.target.name]: e.target.value,
     });
   };
-
-  // useEffect(() => {
-  //   if (paymentStatus === 'SUCCESS') {
-  //     alert('El pago fue exitoso. Gracias por tu compra.');
-  //   } else if (paymentStatus === 'FAILED') {
-  //     alert('El pago no se completó.');
-  //   }
-  // }, [paymentStatus]);
 
   return (
     <div className={`checkout-container ${styles['checkout-container']}`}>
@@ -147,15 +142,16 @@ export default function Checkout() {
           )}
 
           <button 
-            className={`checkout-button ${styles['checkout-button']}`}
-            onClick={handleCheckout}
-            disabled={
-              !selectedPayment ||
-              (selectedPayment === 'credit' &&
-                (!cardDetails.cardNumber || !cardDetails.cardHolder || !cardDetails.expiryDate || !cardDetails.cvv))
-            }
+              className={`checkout-button ${styles['checkout-button']}`}
+              onClick={handleCheckout}
+              disabled={
+                  isLoading ||
+                  !selectedPayment ||
+                  (selectedPayment === 'credit' &&
+                      (!cardDetails.cardNumber || !cardDetails.cardHolder || !cardDetails.expiryDate || !cardDetails.cvv))
+              }
           >
-            Complete purchase
+              {isLoading ? 'Redirecting...': 'Complete purchase'}
           </button>
         </div>
 

@@ -16,8 +16,8 @@ contract LoanToken is ERC20, ERC20Burnable, ERC20Permit, Ownable, ILoanToken {
         ERC20Permit("LoanToken")
         Ownable(initialOwner)
     {
-      Sfs sfsContract = Sfs(0xBBd707815a7F7eb6897C7686274AFabd7B579Ff6);
-      sfsContract.register(msg.sender); 
+    //   Sfs sfsContract = Sfs(0xBBd707815a7F7eb6897C7686274AFabd7B579Ff6);
+    //   sfsContract.register(msg.sender); 
     }
 
     function mint(address to, uint256 amount) external onlyOwner {
